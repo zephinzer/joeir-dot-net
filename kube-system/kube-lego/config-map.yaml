@@ -1,0 +1,11 @@
+## VARIABLES:
+##  - ${KUBE_LEGO_EMAIL}
+
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: kube-lego
+  namespace: kube-system
+data:
+  lego.email: ${KUBE_LEGO_EMAIL}
+  lego.url: https://acme-v01.api.letsencrypt.org/directory

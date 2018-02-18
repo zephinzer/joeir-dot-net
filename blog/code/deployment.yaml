@@ -1,0 +1,76 @@
+## VARIABLES:
+##  - ${CLOUDSQL_INSTANCE_CONNECTION_NAME}
+
+kind: Deployment
+apiVersion: extensions/v1beta1
+metadata:
+  name: code
+  namespace: blog
+  labels:
+    app: ghost
+    type: blog
+    content: code
+spec:
+  replicas: 1
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 50%
+      maxUnavailable: 0
+  selector:
+    matchLabels:
+      app: ghost
+      type: blog
+      content: code
+  template:
+    metadata:
+      name: code
+      namespace: blog
+      labels:
+        app: ghost
+        type: blog
+        content: code
+    spec:
+      volumes:
+      - name: cloudsql-secret
+        secret:
+          secretName: code-cloudsql-credentials
+      - name: cloudsql
+        emptyDir:
+      containers:
+      - name: cloudsql-proxy
+        image: gcr.io/cloudsql-docker/gce-proxy:1.11
+        imagePullPolicy: Always
+        command: ["/cloud_sql_proxy",
+                  "-instances=${CLOUDSQL_INSTANCE_CONNECTION_NAME}=tcp:3306",
+                  "-credential_file=/secrets/cloudsql/credentials.json"]
+        volumeMounts:
+        - name: cloudsql-secret
+          mountPath: /secrets/cloudsql
+          readOnly: true
+      - name: code
+        image: ghost:1-alpine
+        imagePullPolicy: Always
+        envFrom:
+        - configMapRef:
+            name: code
+        env:
+        - name: database__connection__user
+          valueFrom:
+            secretKeyRef:
+              name: code-db-credentials
+              key: username
+        - name: database__connection__password
+          valueFrom:
+            secretKeyRef:
+              name: code-db-credentials
+              key: password
+        ports:
+        - containerPort: 2368
+        resources:
+          requests:
+            cpu: 200m
+            memory: 100Mi
+          limits:
+            cpu: 400m
+            memory: 300Mi

@@ -1,0 +1,70 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: nginx
+  namespace: ingress
+  labels:
+    app: nginx
+    type: controller
+spec:
+  replicas: 1
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+  selector:
+    matchLabels:
+      app: nginx
+      type: controller
+  template:
+    metadata:
+      labels:
+        app: nginx
+        type: controller
+    spec:
+      containers:
+      - name: nginx
+        image: quay.io/kubernetes-ingress-controller/nginx-ingress-controller:0.10.2
+        imagePullPolicy: IfNotPresent
+        args:
+          - /nginx-ingress-controller
+          - --default-backend-service=$(POD_NAMESPACE)/default-backend
+          - --configmap=$(POD_NAMESPACE)/nginx
+          - --tcp-services-configmap=$(POD_NAMESPACE)/tcp
+          - --udp-services-configmap=$(POD_NAMESPACE)/udp
+          - --annotations-prefix=nginx.ingress.kubernetes.io
+          - --publish-service=$(POD_NAMESPACE)/nginx
+        env:
+        - name: POD_NAME
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.name
+        - name: POD_NAMESPACE
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.namespace
+        ports:
+        - name: http
+          containerPort: 80
+        - name: https
+          containerPort: 443
+        livenessProbe:
+          failureThreshold: 3
+          httpGet:
+            path: /healthz
+            port: 10254
+            scheme: HTTP
+          initialDelaySeconds: 10
+          periodSeconds: 10
+          successThreshold: 1
+          timeoutSeconds: 1
+        readinessProbe:
+          failureThreshold: 3
+          httpGet:
+            path: /healthz
+            port: 10254
+            scheme: HTTP
+          periodSeconds: 10
+          successThreshold: 1
+          timeoutSeconds: 1

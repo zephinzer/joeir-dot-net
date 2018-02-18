@@ -1,0 +1,8 @@
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: nginx
+  namespace: ingress
+  labels:
+    app: nginx
+    type: controller

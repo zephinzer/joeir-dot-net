@@ -1,0 +1,18 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: code
+  namespace: blog
+  labels:
+    app: ghost
+    type: blog
+    content: code
+spec:
+  selector:
+    app: ghost
+    type: blog
+    content: code
+  ports:
+    - name: main-http
+      port: 2368
+      targetPort: 2368

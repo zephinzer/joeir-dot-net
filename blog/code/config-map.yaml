@@ -1,0 +1,19 @@
+## VARIABLES:
+##  - ${DB_HOST}
+##  - ${DB_NAME}
+##  - ${DB_USERNAME}
+##  - ${DB_PASSWORD}
+
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: code
+  namespace: blog
+  labels:
+    app: ghost
+    type: blog
+    content: code
+data:
+  database__client: mysql
+  database__connection__host: ${DB_HOST}
+  database__connection__database: ${DB_NAME}

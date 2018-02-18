@@ -1,0 +1,16 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: default-backend
+  namespace: ingress
+  labels:
+    app: default-backend
+    type: default-backend
+spec:
+  selector:
+    app: default-backend
+    type: default-backend
+  ports:
+  - name: main-http
+    port: 8080
+    targetPort: 8080

@@ -1,0 +1,21 @@
+kind: Ingress
+apiVersion: extensions/v1beta1
+metadata:
+  name: default-backend
+  namespace: ingress
+  annotations:
+    kubernetes.io/tls-acme: "true"
+    kubernetes.io/ingress.class: "nginx"
+spec:
+  tls:
+  - hosts:
+    - ${SUBDOMAIN}.${DOMAIN}
+    secretName: ${SUBDOMAIN_DASH_CASE}-tls
+  rules:
+  - host: ${SUBDOMAIN}.${DOMAIN}
+    http:
+      paths:
+      - path: /*
+        backend:
+          serviceName: default-backend
+          servicePort: 8080

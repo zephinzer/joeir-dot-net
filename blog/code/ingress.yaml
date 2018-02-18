@@ -1,0 +1,31 @@
+## VARIABLES
+##  - ${DOMAIN}
+##  - ${DOMAIN_ESCAPED}
+##  - ${SUBDOMAIN}
+##  - ${SUBDOMAIN_ESCAPED}
+
+kind: Ingress
+apiVersion: extensions/v1beta1
+metadata:
+  name: code
+  namespace: blog
+  annotations:
+    kubernetes.io/tls-acme: "true"
+    kubernetes.io/ingress.class: "nginx"
+spec:
+  tls:
+  - hosts:
+    - ${SUBDOMAIN}.${DOMAIN}
+    secretName: ${SUBDOMAIN_ESCAPED}-${DOMAIN_ESCAPED}-tls
+  rules:
+  - host: ${SUBDOMAIN}.${DOMAIN}
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: code
+          servicePort: 2368
+      - path: /*
+        backend:
+          serviceName: code
+          servicePort: 2368
