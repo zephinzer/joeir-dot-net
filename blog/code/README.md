@@ -32,9 +32,11 @@ At the end of this section you should have the following files in your `./.confi
 - `cloud_sql_instance_id` (from the [CloudSQL Setup step](#cloudsql-setup))
 
 #### `CLOUDSQL_CREDENTIALS`
-Create a file at `./.config/.CLOUD_CREDENTIALS.JSON` with your service account's credentials in here. To create a Cloud SQL service account, go to the following page: `https://console.cloud.google.com/iam-admin/serviceaccounts/project?project=%_PROJECT_ID%` where `%_PROJECT_ID_%` is your Google Cloud Platform project ID.
+Create a file at `./.config/.CLOUDSQL_CREDENTIALS.JSON` with your service account's credentials in here.
 
-Create a new Service Account and set the role to Cloud SQL Client. Furnish a new set of credentials and select JSON. A file download will occur after the service account is created. Place the contents of this file into `./.config/.CLOUD_CREDENTIALS.json`.
+To create a Cloud SQL service account, go to the following page: `https://console.cloud.google.com/iam-admin/serviceaccounts/project?project=%_PROJECT_ID%` where `%_PROJECT_ID_%` is your Google Cloud Platform project ID.
+
+Create a new Service Account and set the role to Cloud SQL Client. Furnish a new set of credentials and select JSON. A file download will occur after the service account is created. Place the contents of this file into `./.config/.CLOUDSQL_CREDENTIALS.json`.
 
 #### `CLOUDSQL_INSTANCE_CONNECTION_NAME`
 > This step assumes `./.config/cloud_sql_instance_id` is present relative to this directory and correct.
