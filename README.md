@@ -26,7 +26,7 @@ All directories prefixed with a period are considered deployment sensitive and c
 Filenames in **UPPERCASE** are considered to be variables used in the deployment manifests. Filenames in **lowercase** contain variable values that scripts use to generate files/output results not directly related to the deployment manifests.
 
 ### Code Discipline
-As far as possible, we keep secrets and keys out of the deployment manifests in `./.config` and `./.deployments` directories which are universally ignored using `.gitignore`. This allows me to open-source this repository without fear you'll hunt down my servers.
+As far as possible, we keep secrets and keys out of the deployment manifests in `./.config` and `./.deployments` directories which are universally ignored using `.gitignore`. This allows me to open-source this repository without fear you'll hunt down my servers. Just kidding.
 
 ### Configuration
 All configuration should be held in a `./.config` directory relative to the deployment and it should have a `.gitignore` file which ignores all files other than the `.gitignore`. This directory will contain keys and other sensitive information required for generating the final deployment files, so **remember the `.gitignore`**.
@@ -60,6 +60,9 @@ You'll need the following software installed:
 
 1. `gcloud` - get it from https://cloud.google.com/sdk/downloads
 2. `kubectl` - should come installed with `gcloud`: run `gcloud components install kubectl` after `gcloud` is installed.
+
+### Prerequisite State
+You'll need to already have a cluster set up in GCP. You can follow the guide at https://cloud.google.com/kubernetes-engine/docs/quickstart to get started. The guide includes installation instructions for the prerequisite software.
 
 ### Google Cloud Platform Configuration
 To get started, create the following files relative to the repository root:
@@ -108,4 +111,5 @@ This means the `kubectl` context has been set.
 
 ## Reference/Tutorial Links
 
+- [Google Kubernetes Engine Quickstart](https://cloud.google.com/kubernetes-engine/docs/quickstart)
 - [Kubernetes API Reference](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.9/)
