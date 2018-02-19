@@ -32,7 +32,7 @@ At the end of this section you should have the following files in your `./.confi
 - `cloud_sql_instance_id` (from the [CloudSQL Setup step](#cloudsql-setup))
 
 #### `CLOUDSQL_CREDENTIALS`
-Create a file at `./.config/.CLOUDSQL_CREDENTIALS.JSON` with your service account's credentials in here.
+Create a file at `./.config/.CLOUDSQL_CREDENTIALS.json` with your service account's credentials in here.
 
 To create a Cloud SQL service account, go to the following page: `https://console.cloud.google.com/iam-admin/serviceaccounts/project?project=%_PROJECT_ID%` where `%_PROJECT_ID_%` is your Google Cloud Platform project ID.
 
@@ -105,6 +105,14 @@ If you're using Namecheap like me, place your domain name into `./.config/domain
 ```
 
 This will open up your domain management panel for the domain specified.
+
+#### `GCP_PERSISTENT_DISK_NAME`
+Create a new Persistent Disk from GCP at the following URL, changing `%_PROJECT_ID_%` to your GCP project's ID: `https://console.cloud.google.com/compute/disks?project=%_PROJECT_ID_%`.
+
+Take note of the name and place it into the file at `./.config/.GCP_PERSISTENT_DISK_NAME`.
+
+#### `GCP_PERSISTENT_DISK_SIZE`
+Following the steps from [`GCP_PERSISTENT_DISK_NAME`](#gcp_persistent_disk_name), place the disk size inside here. If it's 50 gigabytes, abbreviate it as `50Gi`.
 
 #### `SUBDOMAIN`
 Put your subdomain name into the file at `./.config/.SUBDOMAIN`.
