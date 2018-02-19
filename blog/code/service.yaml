@@ -16,3 +16,4 @@ spec:
     - name: main-http
       port: 2368
       targetPort: 2368
+  type: NodePort
