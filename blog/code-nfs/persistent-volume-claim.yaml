@@ -1,0 +1,24 @@
+## VARIABLES:
+##  - ${GCE_PERSISTENT_DISK_SIZE}
+
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: code-nfs
+  namespace: blog
+  labels:
+    app: ghost
+    type: nfs-storage
+    content: code
+spec:
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: ${GCE_PERSISTENT_DISK_SIZE}
+  storageClassName: data
+  selector:
+    matchLabels:
+      app: ghost
+      type: nfs-storage
+      content: code

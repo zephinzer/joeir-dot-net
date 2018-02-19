@@ -1,0 +1,22 @@
+## VARIABLES:
+##  - ${GCE_PERSISTENT_DISK_SIZE}
+##  - ${GCE_PERSISTENT_DISK_NAME}
+
+kind: PersistentVolume
+apiVersion: v1
+metadata:
+  name: blog-code-nfs
+  labels:
+    app: ghost
+    type: nfs-storage
+    content: code
+spec:
+  capacity:
+    storage: ${GCE_PERSISTENT_DISK_SIZE}
+  accessModes:
+    - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: data
+  gcePersistentDisk:
+    pdName: ${GCE_PERSISTENT_DISK_NAME}
+    fsType: ext4

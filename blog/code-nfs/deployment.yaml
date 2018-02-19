@@ -1,0 +1,52 @@
+kind: Deployment
+apiVersion: extensions/v1beta1
+metadata:
+  name: code-nfs
+  namespace: blog
+  labels:
+    app: ghost
+    type: nfs-storage
+    content: code
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ghost
+      type: nfs-storage
+      content: code
+  template:
+    metadata:
+      name: code-nfs
+      namespace: blog
+      labels:
+        app: ghost
+        type: nfs-storage
+        content: code
+    spec:
+      containers:
+      - name: code-nfs
+        image: k8s.gcr.io/volume-nfs:0.8
+        imagePullPolicy: IfNotPresent
+        ports:
+        - name: nfs
+          containerPort: 2049
+        - name: mountd
+          containerPort: 20048
+        - name: rpcbind
+          containerPort: 111
+        securityContext:
+          privileged: true
+        volumeMounts:
+        - mountPath: /exports
+          name: code-nfs-volume
+        resources:
+          requests:
+            cpu: 100m
+            memory: 100Mi
+          limits:
+            cpu: 120m
+            memory: 120Mi
+      volumes:
+      - name: code-nfs-volume
+        persistentVolumeClaim:
+          claimName: code-nfs
