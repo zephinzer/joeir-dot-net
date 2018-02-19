@@ -15,8 +15,8 @@ spec:
   strategy:
     type: RollingUpdate
     rollingUpdate:
-      maxSurge: 50%
-      maxUnavailable: 0
+      maxSurge: 0
+      maxUnavailable: 1
   selector:
     matchLabels:
       app: ghost
@@ -37,20 +37,33 @@ spec:
           secretName: code-cloudsql-credentials
       - name: cloudsql
         emptyDir:
+      - name: ghost-config
+        configMap:
+          name: code-ghost-config
+      - name: ghost-content
+        persistentVolumeClaim:
+          claimName: code-content
       containers:
       - name: cloudsql-proxy
         image: gcr.io/cloudsql-docker/gce-proxy:1.11
-        imagePullPolicy: Always
+        imagePullPolicy: IfNotPresent
         command: ["/cloud_sql_proxy",
                   "-instances=${CLOUDSQL_INSTANCE_CONNECTION_NAME}=tcp:3306",
                   "-credential_file=/secrets/cloudsql/credentials.json"]
+        resources:
+          requests:
+            cpu: 100m
+            memory: 100Mi
+          limits:
+            cpu: 120m
+            memory: 120Mi
         volumeMounts:
         - name: cloudsql-secret
           mountPath: /secrets/cloudsql
           readOnly: true
       - name: code
         image: ghost:1-alpine
-        imagePullPolicy: Always
+        imagePullPolicy: IfNotPresent
         envFrom:
         - configMapRef:
             name: code
@@ -69,8 +82,14 @@ spec:
         - containerPort: 2368
         resources:
           requests:
-            cpu: 200m
-            memory: 100Mi
+            cpu: 300m
+            memory: 200Mi
           limits:
-            cpu: 400m
-            memory: 300Mi
+            cpu: 350m
+            memory: 250Mi
+        volumeMounts:
+        - name: ghost-config
+          mountPath: /var/lib/ghost/config.production.json
+          subPath: config.production.json
+        - name: ghost-content
+          mountPath: /var/lib/ghost/content

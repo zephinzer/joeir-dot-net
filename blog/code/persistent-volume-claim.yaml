@@ -1,0 +1,24 @@
+## VARIABLES:
+##  - ${GCP_PERSISTENT_DISK_SIZE}
+
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: code-content
+  namespace: blog
+  labels:
+    app: ghost
+    type: blog
+    content: code
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: ${GCP_PERSISTENT_DISK_SIZE}
+  storageClassName: data
+  selector:
+    matchLabels:
+      app: ghost
+      type: blog
+      content: code

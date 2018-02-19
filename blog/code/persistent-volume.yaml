@@ -1,0 +1,22 @@
+## VARIABLES:
+##  - ${GCP_PERSISTENT_DISK_SIZE}
+##  - ${GCP_PERSISTENT_DISK_NAME}
+
+kind: PersistentVolume
+apiVersion: v1
+metadata:
+  name: blog-code-content
+  labels:
+    app: ghost
+    type: blog
+    content: code
+spec:
+  capacity:
+    storage: ${GCP_PERSISTENT_DISK_SIZE}
+  accessModes:
+    - ReadWriteMany
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: data
+  gcePersistentDisk:
+    pdName: ${GCP_PERSISTENT_DISK_NAME}
+    fsType: ext4

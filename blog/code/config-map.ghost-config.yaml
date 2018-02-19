@@ -1,0 +1,15 @@
+## VARIABLES:
+##  - ${GHOST_PRODUCTION_CONFIG}
+
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: code-ghost-config
+  namespace: blog
+  labels:
+    app: ghost
+    type: blog
+    content: code
+data:
+  config.production.json: |
+    ${GHOST_PRODUCTION_CONFIG}
