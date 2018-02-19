@@ -11,7 +11,7 @@ metadata:
     type: blog
     content: code
 spec:
-  replicas: 1
+  replicas: 2
   strategy:
     type: RollingUpdate
     rollingUpdate:
@@ -42,7 +42,8 @@ spec:
           name: code-ghost-config
       - name: ghost-content
         persistentVolumeClaim:
-          claimName: code-content
+          # if using non-NFS-enabled deployment, remove the `-nfs` postfix
+          claimName: code-content-nfs
       containers:
       - name: cloudsql-proxy
         image: gcr.io/cloudsql-docker/gce-proxy:1.11

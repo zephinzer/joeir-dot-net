@@ -1,0 +1,21 @@
+## VARIABLES:
+##  - ${GCE_PERSISTENT_DISK_SIZE}
+##  - ${NFS_SERVER}
+
+kind: PersistentVolume
+apiVersion: v1
+metadata:
+  name: blog-code-nfs-vol
+  labels:
+    app: ghost
+    type: blog
+    content: code
+    storage: nfs
+spec:
+  capacity:
+    storage: ${GCE_PERSISTENT_DISK_SIZE}
+  accessModes:
+    - ReadWriteMany
+  nfs:
+    server: ${NFS_SERVER}
+    path: "/"
